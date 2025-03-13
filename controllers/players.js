@@ -8,7 +8,6 @@ const findPlayer = async (id) => {
 
     try {
         player = await playersCollection.findOne(query);
-        console.log(player);
     } catch(error) {
         throw error;
     }
@@ -16,8 +15,28 @@ const findPlayer = async (id) => {
     if(player == null) {
         throw new Error("player not found");
     }
+
+    const trimmedPlayer = {
+        firstName: player.first_name,
+        lastName: player.last_name,
+        birthDate: player.birth_date,
+        status: player.status,
+        yearsExp: player.years_exp,
+        position: player.position,
+        college: player.college,
+        fullName: player.full_name,
+        team: player.team,
+        statsId: player.stats_id,
+        image: player.image,
+    }
     
-    return player;
+    return {
+        data: {
+            attributes: trimmedPlayer,
+            id: player._id,
+            type: "player",
+        },
+    };
 }
 
 const getPlayer = async(req, res) => {
